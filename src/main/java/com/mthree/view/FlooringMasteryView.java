@@ -3,6 +3,8 @@ package com.mthree.view;
 import com.mthree.model.Order;
 import com.mthree.model.Product;
 import com.mthree.model.Tax;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -11,6 +13,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.List;
 
+@Component
 public class FlooringMasteryView {
 
     private UserIO inputOutput;
@@ -19,6 +22,7 @@ public class FlooringMasteryView {
      * Creates the View with the required UserIO dependency
      * @return inputOutput the userIO implementation
      */
+    @Autowired
     public FlooringMasteryView(UserIO inputOutput){
         this.inputOutput = inputOutput;
     }
@@ -33,9 +37,9 @@ public class FlooringMasteryView {
                 "* * * * * * * * * * * * * * * * * * * * * * * * * * ");
         inputOutput.print("* <<Flooring Program>>");
         inputOutput.print("* 1. Display Orders");
-        inputOutput.print("* 2. Add an order");
+        inputOutput.print("* 2. Add an Order");
         inputOutput.print("* 3. Edit an Order");
-        inputOutput.print("* 4. Remove and Order");
+        inputOutput.print("* 4. Remove an Order");
         inputOutput.print("* 5. Export All Data");
         inputOutput.print("* 6. Quit");
         inputOutput.print("*");
@@ -54,7 +58,7 @@ public class FlooringMasteryView {
 
         while(true){
 
-            String dateInput = inputOutput.readString("Entered date (MM-dd-yyyy):");
+            String dateInput = inputOutput.readString("Enter date (MM-dd-yyyy):");
 
             try{
 
@@ -105,7 +109,11 @@ public class FlooringMasteryView {
 
     }
 
+    /**
+     * Displays the Add Order banner
+     */
     public void displayAddOrderBanner(){
+        inputOutput.print("=== Add Order ===");
 
     }
 
@@ -197,6 +205,7 @@ public class FlooringMasteryView {
      * @return the entered order number
      */
     public int getOrderNumberInput(){
+
         return inputOutput.readInt("Enter order number:");
     }
 

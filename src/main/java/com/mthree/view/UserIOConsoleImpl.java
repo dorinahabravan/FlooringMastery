@@ -1,7 +1,10 @@
 package com.mthree.view;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Scanner;
 
+@Component
 public class UserIOConsoleImpl implements  UserIO {
 
     // Scanner used to read input from the console

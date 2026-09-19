@@ -9,12 +9,17 @@ import com.mthree.exceptions.PersistenceException;
 import com.mthree.model.Order;
 import com.mthree.model.Product;
 import com.mthree.model.Tax;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+@Component
 public class ServiceLayerImpl implements ServiceLayer {
 
     private OrderDao orderDao;
@@ -29,10 +34,12 @@ public class ServiceLayerImpl implements ServiceLayer {
      * @param taxDao
      * @param productDao
      */
-    public ServiceLayerImpl(OrderDao orderDao, TaxDao taxDao, ProductDao productDao){
+    @Autowired
+    public ServiceLayerImpl(OrderDao orderDao, TaxDao taxDao, ProductDao productDao, ExportDao exportDao){
         this.orderDao = orderDao;
         this.taxDao = taxDao;
         this.productDao = productDao;
+        this.exportDao = exportDao;
     }
 
     /**
@@ -82,6 +89,11 @@ public class ServiceLayerImpl implements ServiceLayer {
             }
         }
 
+        //Generate the next order number for a new order
+        if(order.getOrderNumber() == 0){
+            order.setOrderNumber(orderDao.getNextOrderNumber());
+        }
+
         //Calculate all order costs
         calculateOrderCosts(order);
         return order;
@@ -97,9 +109,10 @@ public class ServiceLayerImpl implements ServiceLayer {
     @Override
     public Order addOrder(Order order) throws PersistenceException {
 
-        //Assign the next available order number
-        int orderNumber = orderDao.getNextOrderNumber();
-        order.setOrderNumber(orderNumber);
+        //Generate an order number if one has not already been assigned
+        if(order.getOrderNumber() == 0){
+            order.setOrderNumber(orderDao.getNextOrderNumber());
+        }
 
         // Save the completed order
         return orderDao.addOrder(order);
@@ -128,22 +141,28 @@ public class ServiceLayerImpl implements ServiceLayer {
 
         //Calculate the material cost
         BigDecimal materialCost =
-                order.getArea().multiply(order.getCostPerSquareFoot());
-        order.setMaterialCost(materialCost);
+                order.getArea().multiply(order.getCostPerSquareFoot())
+                        .setScale(2, RoundingMode.HALF_UP);
+                order.setMaterialCost(materialCost);
 
         //Calculate the labor cost
         BigDecimal laborCost =
-                order.getArea().multiply(order.getLaborCostPerSquareFoot());
+                order.getArea().multiply(order.getLaborCostPerSquareFoot())
+                               .setScale(2, RoundingMode.HALF_UP);;
         order.setLaborCost(laborCost);
 
         //Calculate the tax
         BigDecimal taxRate = order.getTaxRate().divide(new BigDecimal("100"));
 
-        BigDecimal taxCalculation = materialCost.add(laborCost).multiply(taxRate);
+        BigDecimal taxCalculation = materialCost.add(laborCost)
+                                 .multiply(taxRate)
+                                 .setScale(2, RoundingMode.HALF_UP);
         order.setTax(taxCalculation);
 
         //Calculate total cost
-        BigDecimal total = materialCost.add(laborCost).add(taxCalculation);
+        BigDecimal total = materialCost.add(laborCost)
+                                  .add(taxCalculation)
+                                  .setScale(2, RoundingMode.HALF_UP);;
         order.setTotal(total);
 
 
@@ -193,8 +212,18 @@ public class ServiceLayerImpl implements ServiceLayer {
         return orderDao.removeOrder(convertedDate, orderNumber);
     }
 
+
+    /**
+     * Exports all current orders
+     */
     @Override
-    public void exportData() {
+    public void exportData() throws PersistenceException{
+
+        //Get al current orders
+        Map<Integer, Order > orders = orderDao.getAllOrders();
+
+        //Export the orders to the backup files
+        exportDao.exportData(orders);
 
     }
 

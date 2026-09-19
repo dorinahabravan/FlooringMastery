@@ -1,12 +1,14 @@
 package com.mthree.dao;
 
 import com.mthree.model.Product;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.*;
 
+@Component
 public class ProductDaoFileImpl implements  ProductDao{
 
 

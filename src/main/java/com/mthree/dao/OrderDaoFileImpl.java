@@ -3,6 +3,7 @@ package com.mthree.dao;
 import com.mthree.exceptions.NoSuchOrderException;
 import com.mthree.exceptions.PersistenceException;
 import com.mthree.model.Order;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,6 +13,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+
+@Component
 public class OrderDaoFileImpl implements OrderDao{
 
     private static String DELIMITER = ",";
@@ -132,10 +135,24 @@ public class OrderDaoFileImpl implements OrderDao{
                 if(scanner.hasNextLine()){
                     scanner.nextLine();
                 }
+
                 //Read each order from the file
-                while(scanner.hasNextLine()){
+                while (scanner.hasNextLine()){
                     String line = scanner.nextLine();
                     String[] values = line.split(DELIMITER);
+
+                    //Find how many commas are parte of the customer name
+                    int customerNameParts = values.length -11;
+
+                    //Build the complete customer name
+                    StringBuilder customerName = new StringBuilder(values[1]);
+
+                    for (int i =2; i <= customerNameParts; i++){
+                        customerName.append(",").append(values[i]);
+                    }
+
+                    //Position of the state after the customer name
+                    int stateIndex = customerNameParts + 1;
 
                     //Create the Order object
                     Order order = new Order();
@@ -145,17 +162,17 @@ public class OrderDaoFileImpl implements OrderDao{
 
                     //Set the order data from teh current row
                     order.setOrderNumber(Integer.parseInt(values[0]));
-                    order.setCustomerName(values[1]);
-                    order.setState(values[2]);
-                    order.setTaxRate(new BigDecimal(values[3]));
-                    order.setProductType(values[4]);
-                    order.setArea(new BigDecimal(values[5]));
-                    order.setCostPerSquareFoot(new BigDecimal(values[6]));
-                    order.setLaborCostPerSquareFoot(new BigDecimal(values[7]));
-                    order.setMaterialCost(new BigDecimal(values[8]));
-                    order.setLaborCost(new BigDecimal(values[9]));
-                    order.setTax(new BigDecimal(values[10]));
-                    order.setTotal(new BigDecimal(values[11]));
+                    order.setCustomerName(customerName.toString());
+                    order.setState(values[stateIndex]);
+                    order.setTaxRate(new BigDecimal(values[stateIndex + 1]));
+                    order.setProductType(values[stateIndex + 2]);
+                    order.setArea(new BigDecimal(values[stateIndex + 3]));
+                    order.setCostPerSquareFoot(new BigDecimal(values[stateIndex + 4]));
+                    order.setLaborCostPerSquareFoot(new BigDecimal(values[stateIndex + 5]));
+                    order.setMaterialCost(new BigDecimal(values[stateIndex +6]));
+                    order.setLaborCost(new BigDecimal(values[stateIndex +7]));
+                    order.setTax(new BigDecimal(values[stateIndex +8]));
+                    order.setTotal(new BigDecimal(values[stateIndex +9]));
 
                     //Store the order using its order number as the key
                     orders.put(order.getOrderNumber(), order);
@@ -290,6 +307,7 @@ public class OrderDaoFileImpl implements OrderDao{
     @Override
     public List<Order> getOrdersForDate(Date date) throws  PersistenceException{
         //Load all existing orders
+        loadFromFile();
 
         //Store orders matching the requested date
         List<Order> ordersForDate = new ArrayList<>();

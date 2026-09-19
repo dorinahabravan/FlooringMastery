@@ -18,7 +18,7 @@ public interface ServiceLayer {
     public Order editOrder(LocalDate date, int orderNumber) throws PersistenceException, NoSuchOrderException;
     public List<Order> getOrdersForDate(LocalDate date) throws  PersistenceException;
     public Order removeOrder(LocalDate date, int orderNumber) throws PersistenceException, NoSuchOrderException;
-    public void exportData();
+    public void exportData() throws PersistenceException;
     public List<Tax> getTaxes();
     public List<Product>  getProducts();
 
