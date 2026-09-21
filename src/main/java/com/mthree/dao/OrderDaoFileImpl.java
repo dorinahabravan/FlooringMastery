@@ -228,7 +228,7 @@ public class OrderDaoFileImpl implements OrderDao{
      * @param orderNumber the order number
      * @return the matching order
      * @throws PersistenceException if the order files cannot be read
-     * @throws NoSuchOrderException ift the order does not exist
+     * @throws NoSuchOrderException if the order does not exist
      */
     @Override
     public Order getOrder(Date date, int orderNumber) throws PersistenceException , NoSuchOrderException {

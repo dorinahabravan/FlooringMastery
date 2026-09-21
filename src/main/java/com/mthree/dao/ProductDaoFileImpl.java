@@ -12,8 +12,8 @@ import java.util.*;
 public class ProductDaoFileImpl implements  ProductDao{
 
 
-    public static final String DELIMITER = ",";
-    public static final String PRODUCT_FILE = "Data/Products.txt";
+    private static final String DELIMITER = ",";
+    private static final String PRODUCT_FILE = "Data/Products.txt";
     private Map <String, Product> allProducts = new HashMap<>();
 
     private void loadFile(){

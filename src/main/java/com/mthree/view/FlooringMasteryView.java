@@ -20,10 +20,11 @@ public class FlooringMasteryView {
 
     /**
      * Creates the View with the required UserIO dependency
-     * @return inputOutput the userIO implementation
+     * @param inputOutput the userIO implementation
      */
     @Autowired
     public FlooringMasteryView(UserIO inputOutput){
+
         this.inputOutput = inputOutput;
     }
 

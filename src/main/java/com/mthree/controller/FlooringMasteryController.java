@@ -58,7 +58,7 @@ public class FlooringMasteryController {
                     keepGoing = false;
                     break;
                 default:
-                    uknownCommand();
+                    unknownCommand();
             }
         }
         exitMessage();
@@ -262,7 +262,7 @@ public class FlooringMasteryController {
     /**
      * Display a message for an unknown command
      */
-    private void uknownCommand(){
+    private void unknownCommand(){
         view.displayUnknownCommandMessage();
 
     }

@@ -1,2 +1,2 @@
 OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
-1002,Bogdan Coropceanu,TX,4.45,Wood,150,5.15,4.75,772.50,712.50,66.08,1551.08
+4,Dorina Habravan,TX,4.45,Laminate,150,1.75,2.10,262.50,315.00,25.70,603.20

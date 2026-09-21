@@ -1,2 +1,2 @@
 OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
-1000,Dorina Habravan,TX,4.45,Carpet,120,2.25,2.10,270.00,252.00,23.229000,545.229000
+6,Dorina92 Habravan.,KY,6.00,Carpet,245,2.25,2.10,551.25,514.50,63.95,1129.70

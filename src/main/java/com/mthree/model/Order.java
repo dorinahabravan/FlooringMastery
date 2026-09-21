@@ -6,19 +6,19 @@ import java.util.Objects;
 
 public class Order {
 
-    int orderNumber;
-    String customerName;
-    String state;
-    Date orderDate;
-    BigDecimal taxRate;
-    String productType;
-    BigDecimal costPerSquareFoot;
-    BigDecimal laborCostPerSquareFoot;
-    BigDecimal materialCost;
-    BigDecimal area;
-    BigDecimal laborCost;
-    BigDecimal tax;
-    BigDecimal total;
+   private int orderNumber;
+   private String customerName;
+   private String state;
+   private Date orderDate;
+   private BigDecimal taxRate;
+   private String productType;
+   private BigDecimal costPerSquareFoot;
+   private BigDecimal laborCostPerSquareFoot;
+   private BigDecimal materialCost;
+   private BigDecimal area;
+   private BigDecimal laborCost;
+   private BigDecimal tax;
+   private BigDecimal total;
 
     public int getOrderNumber() {
         return orderNumber;
