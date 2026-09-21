@@ -71,23 +71,24 @@ public class ServiceLayerImpl implements ServiceLayer {
      */
     @Override
     public Order calculateOrder(Order order) throws PersistenceException {
-        //Find and apply the tax rate
-        for(Tax tax : taxDao.getAllTaxes()){
-            if(tax.getStateAbr().equalsIgnoreCase(order.getState())){
-                order.setTaxRate(tax.getTaxRate());
-                break;
-            }
-        }
 
-        //Find and apply the product costs
-        for(Product product : productDao.getAllProducts()){
-            if(product.getProductType().equalsIgnoreCase(order.getProductType())){
-                order.setCostPerSquareFoot(product.getCostPerSquareFoot());
+        //Find and apply the tax rate using Stream and Lambda
+        taxDao.getAllTaxes().stream()
+                .filter(tax -> tax.getStateAbr().equalsIgnoreCase(order.getState()))
+                .findFirst()
+                .ifPresent(tax -> order.setTaxRate(tax.getTaxRate()));
 
-                order.setLaborCostPerSquareFoot(product.getLaborCostPerSquareFoot());
-                break;
-            }
-        }
+
+        //Find and apply the product costs  using Stream and Lambda
+        productDao.getAllProducts().stream()
+                .filter(product -> product.getProductType()
+                        .equalsIgnoreCase(order.getProductType()))
+                .findFirst()
+                .ifPresent(product -> {
+                    order.setCostPerSquareFoot(product.getCostPerSquareFoot());
+                    order.setLaborCostPerSquareFoot(product.getLaborCostPerSquareFoot());
+                });
+
 
         //Generate the next order number for a new order
         if(order.getOrderNumber() == 0){

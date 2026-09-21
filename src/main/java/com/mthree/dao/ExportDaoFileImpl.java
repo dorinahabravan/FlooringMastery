@@ -4,12 +4,11 @@ import com.mthree.exceptions.PersistenceException;
 import com.mthree.model.Order;
 import org.springframework.stereotype.Component;
 
-import javax.imageio.IIOException;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Map;
 
 
@@ -20,10 +19,20 @@ public class ExportDaoFileImpl implements ExportDao{
     private static final String DELIMITER = ",";
     private static final String EXPORT_FILE = "Backup/DataExport.txt";
 
+
+
     /**
      * Writes all orders to the export file
      */
     private void writeToFile(Map<Integer , Order> orders) throws PersistenceException {
+
+        //Create the backup folder if it does not exist
+        File backupFolder = new File("Backup");
+
+        if(!backupFolder.exists() && !backupFolder.mkdirs()){
+            throw new PersistenceException("Could not create backup folder");
+        }
+
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(EXPORT_FILE))){
 
