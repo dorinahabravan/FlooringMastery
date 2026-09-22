@@ -124,6 +124,12 @@ public class Order {
         this.total = total;
     }
 
+
+    /**
+     * Compares orders using the order number.
+     * @param o   the reference object with which to compare.
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -131,11 +137,20 @@ public class Order {
         return orderNumber == order.orderNumber;
     }
 
+    /**
+     * Generates a hash code using the order number.
+     * @return
+     */
     @Override
     public int hashCode() {
         return Objects.hashCode(orderNumber);
     }
 
+
+    /**
+     * Returns the order details as a String.
+     * @return
+     */
     @Override
     public String toString() {
         return "Order{" +

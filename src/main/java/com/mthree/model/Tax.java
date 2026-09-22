@@ -34,6 +34,12 @@ public class Tax {
         this.taxRate = taxRate;
     }
 
+
+    /**
+     * Compares tax records using the state abbreviation.
+     * @param o   the reference object with which to compare.
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -41,11 +47,20 @@ public class Tax {
         return Objects.equals(stateAbr, tax.stateAbr);
     }
 
+    /**
+     * Generates a hash code using the state abbreviation.
+     * @return
+     */
     @Override
     public int hashCode() {
         return Objects.hashCode(stateAbr);
     }
 
+
+    /**
+     * Returns the tax details as a String.
+     * @return
+     */
     @Override
     public String toString() {
         return "Tax{" +

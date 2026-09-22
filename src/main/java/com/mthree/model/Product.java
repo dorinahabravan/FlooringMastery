@@ -34,6 +34,11 @@ public class Product {
         this.laborCostPerSquareFoot = laborCostPerSquareFoot;
     }
 
+    /**
+     * Compares products using the product type.
+     * @param o   the reference object with which to compare.
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -41,11 +46,21 @@ public class Product {
         return Objects.equals(productType, product.productType);
     }
 
+
+    /**
+     * Generates a hash code using the product type.
+     * @return
+     */
     @Override
     public int hashCode() {
         return Objects.hashCode(productType);
     }
 
+
+    /**
+     * Returns the product details as a String.
+     * @return
+     */
     @Override
     public String toString() {
         return "Product{" +
